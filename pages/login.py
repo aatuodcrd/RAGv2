@@ -11,5 +11,5 @@ if st.button("Login"):
         if user:
             st.session_state.username = username
             st.rerun()
-        else:
-            st.error("Invalid username or password")
+    else:
+        st.error("Invalid username or password")
