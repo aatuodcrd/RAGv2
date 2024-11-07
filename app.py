@@ -3,6 +3,7 @@ from utils.mongoDB import chatlogs_collection
 
 login_page = st.Page("pages/login.py", title="Login", icon="🔐")
 upload_page = st.Page("pages/upload.py", title="Upload file", icon="📁")
+chat_page = st.Page("pages/chat.py", title="Chat", icon="💬")
 
 
 
@@ -15,7 +16,7 @@ else:
     for doc in chatlogs_docs:
         st.session_state.namespace_list.append(doc['namespace'])
 
-    pg = st.navigation([upload_page])
+    pg = st.navigation([upload_page, chat_page])
 
 st.set_page_config(page_title="RAG GenAI-PIM", page_icon="🐍")
 pg.run()
