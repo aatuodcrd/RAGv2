@@ -1,4 +1,4 @@
-from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import Pinecone
 import env.settings as ENV
 
 def pinecone_connect():

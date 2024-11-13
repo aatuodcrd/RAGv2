@@ -15,6 +15,7 @@ with st.sidebar.expander("Customize Chat"):
     stream = stream_Toggle.toggle('stream', value=True, help='Streaming mode')
     memory = memory_Toggle.toggle('memory', value=False, help='Memory mode uses the previous 3 conversations.')
     kFromUser = int(st.number_input("retrive documents", min_value=1, max_value=5, value=3))
+    threshold = st.slider("Threshold", min_value=0.0, max_value=1.0, value=0.7)
 
 question = st.chat_input("What is up?")
 with st.container():
@@ -32,5 +33,7 @@ with st.container():
         st.write('<style>.stChatMessage { overflow-wrap: break-word; }</style>', unsafe_allow_html=True)
         
         docs = search_documents_pinecone(question, kFromUser, namespace)
-        print("\ndocs: ", docs)
-        
+        st.write(docs)
+        # if st.session_state.stream == True:
+        #     with st.chat_message("assistant"):
+        #         response = st.write_stream(res)
