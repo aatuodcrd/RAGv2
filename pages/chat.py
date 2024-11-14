@@ -10,6 +10,7 @@ def stream_data(text: str):
 
 # Sidebar selections
 namespace = st.sidebar.selectbox("Select a namespace", st.session_state.get("namespace_list", []))
+
 user_doc = chatlogs_collection.find_one({"username": st.session_state.username, "namespace": namespace})
 config = user_doc.get("config", {})
 stream = config.get("stream", True)
@@ -21,6 +22,11 @@ chatmemory = user_doc.get("chatmemory", [])
 chatlogs = user_doc.get("chatlog", [])
 chatlogs = chatlogs[-5:]
 
+file_list = user_doc.get("file", [])
+if file_list != []:
+    with st.sidebar.expander("Uploaded Files"):
+        for file in file_list:
+            st.write(f"- {file}")
 # Customize chat sidebar options
 with st.sidebar.expander("Customize Chat"):
     stream_Toggle, memory_Toggle = st.columns(2)
