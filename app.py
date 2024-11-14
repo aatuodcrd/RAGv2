@@ -15,9 +15,9 @@ if 'username' not in st.session_state:
         else:
             st.error("Invalid username or password")
 else:
-    upload_page = st.Page("pages/upload.py", title="Upload file", icon="📁")
-    chat_page = st.Page("pages/chat.py", title="Chat", icon="💬")
-    
+    upload_page = st.Page("upload.py", title="Upload file", icon="📁")
+    chat_page = st.Page("chat.py", title="Chat", icon="💬")
+
     username = st.session_state['username']
     chatlogs_docs = chatlogs_collection.find({"username": username})
     st.session_state.namespace_list = []
