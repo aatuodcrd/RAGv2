@@ -11,25 +11,44 @@ from utils.pinecone import pinecone_connect
 
 st.title("Upload file")
 namespace = st.selectbox("Select a namespace", st.session_state.namespace_list)
-delete_namespace = st.button("Delete namespace")
-
+show_old_filename, _, delete_namespace = st.columns(3)
 file_list_old = chatlogs_collection.find_one({"namespace": namespace}).get("file", [])
 if file_list_old:
-    show_old_filename = st.toggle("Show uploaded files")
-    if show_old_filename:
+    if show_old_filename.toggle("Show uploaded files"):
         st.write("#### Uploaded files:")
         for file in file_list_old:
             st.write(f"- {file}")
 
-if delete_namespace:
-    chatlogs_collection.delete_one({"namespace": namespace})
-    try:
-        pinecone_connect().delete(namespace=namespace, delete_all=True)
-    except Exception:
-        pass
-    st.session_state.namespace_list.remove(namespace)
-    st.session_state.namespace_list = st.session_state.namespace_list
-    st.rerun()
+with st.sidebar.expander("Create new namespace"):
+    new_namespace = st.text_input("Enter namespace")
+    if st.button("Create namespace"):
+        if new_namespace in st.session_state.namespace_list:
+            st.error("Namespace already exists.")
+            st.stop()
+        chatlogs_collection.insert_one({"username": st.session_state.username, 
+                                        "namespace": new_namespace, 
+                                        "file": [], 
+                                        "config": {
+                                            "stream": True,
+                                            "memory": False,
+                                            "language": "Thai",
+                                            "kFromUser": 3,
+                                            "threshold": 0.65},
+                                        "chatlog": [],
+                                        "chatmemory": []})
+        st.session_state.namespace_list.append(new_namespace)
+        st.rerun()
+
+if len(st.session_state.namespace_list) >1:
+    if delete_namespace.button("Delete namespace"):
+        chatlogs_collection.delete_one({"namespace": namespace})
+        try:
+            pinecone_connect().delete(namespace=namespace, delete_all=True)
+        except Exception:
+            pass
+        st.session_state.namespace_list.remove(namespace)
+        st.session_state.namespace_list = st.session_state.namespace_list
+        st.rerun()
 
 uploaded_file = st.file_uploader("Choose a file", type=['csv', 'pdf', 'xlsx'])
 uploaded_filename_list = None

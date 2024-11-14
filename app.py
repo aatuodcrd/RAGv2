@@ -1,14 +1,24 @@
 import streamlit as st
-from utils.mongoDB import chatlogs_collection
+from utils.mongoDB import chatlogs_collection, users_collection
 
-login_page = st.Page("pages/login.py", title="Login", icon="🔐")
 upload_page = st.Page("pages/upload.py", title="Upload file", icon="📁")
 chat_page = st.Page("pages/chat.py", title="Chat", icon="💬")
 
 
 
 if 'username' not in st.session_state:
-    pg = st.navigation([login_page])
+    st.title("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username and password:
+            user = users_collection.find_one({"username": username, "password": password})
+            if user:
+                st.session_state.username = username
+                st.rerun()
+        else:
+            st.error("Invalid username or password")
 else:
     username = st.session_state['username']
     chatlogs_docs = chatlogs_collection.find({"username": username})
@@ -17,6 +27,4 @@ else:
         st.session_state.namespace_list.append(doc['namespace'])
 
     pg = st.navigation([upload_page, chat_page])
-
-st.set_page_config(page_title="RAG GenAI-PIM", page_icon="🐍")
-pg.run()
+    pg.run()
