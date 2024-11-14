@@ -25,6 +25,9 @@ with st.sidebar.expander("Create new namespace"):
         if new_namespace in st.session_state.namespace_list:
             st.error("Namespace already exists.")
             st.stop()
+        if chatlogs_collection.find({"namespace": namespace}):
+            st.error("Namespace is already in use.")
+            st.stop()
         chatlogs_collection.insert_one({"username": st.session_state.username, 
                                         "namespace": new_namespace, 
                                         "file": [], 
