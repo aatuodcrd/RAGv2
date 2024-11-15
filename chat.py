@@ -36,8 +36,8 @@ with st.sidebar.expander("Customize Chat"):
     language = language_select
 
     # Stream and memory toggles
-    stream = stream_Toggle.checkbox('Enable Stream', value=stream, help='Streaming mode')
-    memory = memory_Toggle.checkbox('Enable Memory', value=memory, help='Memory mode uses the previous 3 conversations.')
+    stream = stream_Toggle.toggle('Enable Stream', value=stream, help='Streaming mode')
+    memory = memory_Toggle.toggle('Enable Memory', value=memory, help='Memory mode uses the previous 3 conversations.')
 
     # Other configurations
     kFromUser = int(st.number_input("Retrieve documents", min_value=1, max_value=5, value=kFromUser))
@@ -51,7 +51,8 @@ with st.sidebar.expander("Customize Chat"):
                     "kFromUser": kFromUser,
                     "threshold": threshold,
                     "memory": memory,
-                    "language": language
+                    "language": language,
+                    "stream": stream
                 }
             }
         })
