@@ -56,13 +56,14 @@ with st.sidebar.expander("Customize Chat"):
             }
         })
     
-with st.sidebar.expander("Chat Memory"):
-    for chat in chatmemory:
-        st.chat_message("user").markdown(chat['question'])
-        st.chat_message("assistant").markdown(chat['answer'])
-        st.divider()
-    if st.button("Clear Memory"):
-        chatlogs_collection.update_one({"username": st.session_state.username, "namespace": namespace}, {"$set": {"chatmemory": []}})
+if memory:
+    with st.sidebar.expander("Chat Memory"):
+        for chat in chatmemory:
+            st.chat_message("user").markdown(chat['question'])
+            st.chat_message("assistant").markdown(chat['answer'])
+            st.divider()
+        if st.button("Clear Memory"):
+            chatlogs_collection.update_one({"username": st.session_state.username, "namespace": namespace}, {"$set": {"chatmemory": []}})
 
 # Main chat interface
 question = st.chat_input("What is up?")
