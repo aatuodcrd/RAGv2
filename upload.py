@@ -40,6 +40,7 @@ with st.sidebar.expander("Create new namespace"):
                                         "chatlog": [],
                                         "chatmemory": []})
         st.session_state.namespace_list.append(new_namespace)
+        st.success("Namespace created successfully.")
         st.rerun()
 
 if len(st.session_state.namespace_list) > 1:
