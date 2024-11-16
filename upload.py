@@ -25,7 +25,7 @@ with st.sidebar.expander("Create new namespace"):
         if new_namespace in st.session_state.namespace_list:
             st.error("Namespace already exists.")
             st.stop()
-        if chatlogs_collection.find({"namespace": namespace}):
+        if chatlogs_collection.find({"namespace": new_namespace}):
             st.error("Namespace is already in use.")
             st.stop()
         chatlogs_collection.insert_one({"username": st.session_state.username, 
@@ -42,7 +42,7 @@ with st.sidebar.expander("Create new namespace"):
         st.session_state.namespace_list.append(new_namespace)
         st.rerun()
 
-if len(st.session_state.namespace_list) >1:
+if len(st.session_state.namespace_list) > 1:
     if delete_namespace.button("Delete namespace"):
         chatlogs_collection.delete_one({"namespace": namespace})
         try:

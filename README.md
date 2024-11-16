@@ -12,6 +12,10 @@ This project is a document processing and chat application built with Streamlit.
 - **Chat Interface**: Provides a chat interface to ask questions about the uploaded documents.
 - **Memory Mode**: Option to enable memory mode to use previous conversations for context.
 
+## Prerequisites
+
+- Python 3.9.20
+
 ## Install the required packages:
 ```sh
 pip install -r requirements.txt
